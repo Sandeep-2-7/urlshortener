@@ -53,16 +53,19 @@ made to match existing hands-on experience.
 
 ## Testing Approach
 
-- **Unit tests**: service logic in isolation (Mockito), including deterministic testing of the
-  non-deterministic collision-retry path via mocked sequential encoder returns
-- **Integration tests**: full Spring context + H2, verifying real wiring (JPA, cache,
-  `@Transactional`, exception handling) end-to-end via `MockMvc`
-- **Manual verification**: Postman/curl testing at every stage, including log-based proof
-  (thread names, SQL query presence/absence) rather than assuming annotations worked correctly
-  — this caught a real bug (`@Component` vs `@Configuration` silently disabling `@Async`/
-  `@Cacheable`)
-- **Load testing**: rate limiter verified via Postman Collection Runner (25 iterations)
-
+- **Automated unit + integration tests run during the build** (`mvn test`): service logic in
+  isolation (Mockito), including deterministic testing of the non-deterministic
+  collision-retry path via mocked sequential encoder returns, plus full-context integration
+  tests (`MockMvc` + H2) verifying real wiring (JPA, cache, `@Transactional`, exception
+  handling) end-to-end. See `E2E_TEST_CASES.md` for the full scenario-to-test mapping.
+- **Manual verification (supplementary, not build-blocking)**: Postman/curl testing during
+  development, including log-based proof (thread names, SQL query presence/absence) rather
+  than assuming annotations worked correctly — this caught a real bug (`@Component` vs
+  `@Configuration` silently disabling `@Async`/`@Cacheable`). Retained as manual checks for
+  signals that don't map cleanly to a single assertion (console log inspection).
+- **Load testing**: rate limiter verified via Postman Collection Runner (25 iterations) —
+  kept manual since the test profile deliberately raises the rate limit to avoid interfering
+  with the automated suite.
 ## Conclusion
 
 This submission demonstrates engineer-led execution accelerated by AI assistance. Every major design decision — short-code strategy, caching

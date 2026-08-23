@@ -109,16 +109,11 @@ public ResponseEntity<Void> deactivate(@PathVariable String shortCode) {
 
 ---
 
+
 ## 4. Validation
 
-**Manual regression test (proves the cache-eviction fix, not just the feature):**
-```bash
-curl -i http://localhost:8080/{shortCode}                              # warm cache -> 302
-curl -X PATCH http://localhost:8080/api/urls/{shortCode}/deactivate    # -> 204
-curl -i http://localhost:8080/{shortCode}                              # must be 410, not 302
-```
-
-**Automated integration test:**
+**Automated regression test (runs during the build via `mvn test`, proves the cache-eviction
+fix, not just the feature):**
 ```java
 @Test
 void deactivateUrl_evictsCacheAndBlocksRedirect() throws Exception {
@@ -126,10 +121,19 @@ void deactivateUrl_evictsCacheAndBlocksRedirect() throws Exception {
     // the next redirect returns 410 Gone instead of a stale cached 302
 }
 ```
-(Full test in `TrendingTests.java` / integration test suite from Stage 7-8.)
+This is part of `UrlControllerIntegrationTest` and runs on every `mvn test` invocation — this
+specific regression is the one most likely to silently reappear if the cache config changes
+later, so having it enforced automatically (not just checked manually once) matters more here
+than almost anywhere else in the project.
 
+**Equivalent manual reproduction (for debugging against a live instance, not required for the
+build):**
+```bash
+curl -i http://localhost:8080/{shortCode}                              # warm cache -> 302
+curl -X PATCH http://localhost:8080/api/urls/{shortCode}/deactivate    # -> 204
+curl -i http://localhost:8080/{shortCode}                              # must be 410, not 302
+```
 ---
-
 ## 5. Risk & Trade-off Notes
 
 | Risk | Mitigation |

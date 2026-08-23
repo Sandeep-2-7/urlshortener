@@ -65,11 +65,16 @@ rather than generating the entire system at once and debugging retroactively.
 
 ## 4. Validation
 
-- Confirmed async behavior via thread-name logging (`analytics-*` vs. request thread)
-- Confirmed cache behavior via absence of repeated SQL `SELECT` on repeat redirects
-- Confirmed structured error responses for 400/404/409/410/429 — no raw stack traces exposed
-- Load-tested rate limiter via Postman Collection Runner (25 iterations → 20×200, 5×429)
-- Full `mvn test` suite passing against H2 in-memory DB
+- **Automated**: full `mvn test` suite (unit + integration) runs during the build against an
+  in-memory H2 DB, covering shorten/redirect happy paths, collision retry, expiry, structured
+  error responses for 400/404/409/410, and trending — see `E2E_TEST_CASES.md` for the full
+  scenario-to-test mapping
+- **Manual (supplementary)**: confirmed async behavior via thread-name logging
+  (`analytics-*` vs. request thread) and cache behavior via absence of repeated SQL `SELECT`
+  on repeat redirects — kept manual since these assert on log output, not a response value
+- **Manual load test**: rate limiter verified via Postman Collection Runner (25 iterations →
+  20×200, 5×429); kept outside the automated suite since the test profile raises the limit to
+  avoid interfering with other tests
 
 ---
 

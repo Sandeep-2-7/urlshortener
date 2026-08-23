@@ -5,7 +5,7 @@ import com.assignment.urlshortener.dto.ShortenResponse;
 import com.assignment.urlshortener.entity.UrlMapping;
 import com.assignment.urlshortener.exception.*;
 import com.assignment.urlshortener.repository.UrlMappingRepository;
-import com.assignment.urlshortener.service.Base62Encoder;
+import com.assignment.urlshortener.service.RandomCodeGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ public class UrlServiceImplTest {
     @Mock
     private UrlMappingRepository urlMappingRepository;
     @Mock
-    private Base62Encoder base62Encoder;
+    private RandomCodeGenerator randomCodeGenerator;
     @InjectMocks
     private UrlServiceImpl urlServiceImpl;
 
@@ -39,7 +39,7 @@ public class UrlServiceImplTest {
         ShortenRequest  shortenRequest = new ShortenRequest();
         shortenRequest.setOriginalUrl("https://sample.com");
 
-        when(base62Encoder.encode()).thenReturn("abcd987");
+        when(randomCodeGenerator.encode()).thenReturn("abcd987");
         when(urlMappingRepository.existsByShortCode("abcd987")).thenReturn(false);
 
         ShortenResponse shortenResponse = urlServiceImpl.shortenUrl(shortenRequest);
@@ -54,14 +54,14 @@ public class UrlServiceImplTest {
         shortenRequest.setOriginalUrl("https://sample.com");
 
         // First two attempts collide, third succeeds
-        when(base62Encoder.encode()).thenReturn("abcd987","abcd987", "hui4786");
+        when(randomCodeGenerator.encode()).thenReturn("abcd987","abcd987", "hui4786");
         when(urlMappingRepository.existsByShortCode("abcd987")).thenReturn(true);
         when(urlMappingRepository.existsByShortCode("hui4786")).thenReturn(false);
 
         ShortenResponse shortenResponse = urlServiceImpl.shortenUrl(shortenRequest);
 
         assertEquals("http://localhost:8080/hui4786",  shortenResponse.getShortUrl(),"Short url generated is not matching...");
-        verify(base62Encoder,times(3)).encode();
+        verify(randomCodeGenerator,times(3)).encode();
     }
 
     @Test
@@ -69,11 +69,11 @@ public class UrlServiceImplTest {
         ShortenRequest  shortenRequest = new ShortenRequest();
         shortenRequest.setOriginalUrl("https://sample.com");
 
-        when(base62Encoder.encode()).thenReturn("notuniq");
+        when(randomCodeGenerator.encode()).thenReturn("notuniq");
         when(urlMappingRepository.existsByShortCode("notuniq")).thenReturn(true);
 
         assertThrows(ShortCodeGenerationException.class, () -> urlServiceImpl.shortenUrl(shortenRequest),"Short url not generated after max attempts retry...");
-        verify(base62Encoder,times(5)).encode();
+        verify(randomCodeGenerator,times(5)).encode();
     }
 
     @Test

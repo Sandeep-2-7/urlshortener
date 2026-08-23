@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
-public class Base62Encoder {
+public class RandomCodeGenerator {
 
 //    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 //    private static final int BASE = 62;

@@ -5,7 +5,7 @@ import com.assignment.urlshortener.dto.ShortenResponse;
 import com.assignment.urlshortener.entity.UrlMapping;
 import com.assignment.urlshortener.exception.*;
 import com.assignment.urlshortener.repository.UrlMappingRepository;
-import com.assignment.urlshortener.service.Base62Encoder;
+import com.assignment.urlshortener.service.RandomCodeGenerator;
 import com.assignment.urlshortener.service.UrlService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class UrlServiceImpl implements UrlService {
 
     private final UrlMappingRepository urlMappingRepository;
-    private final Base62Encoder base62Encoder;
+    private final RandomCodeGenerator randomCodeGenerator;
     private static final String BASE_URL = "http://localhost:8080/";
 
     @Override
@@ -59,7 +59,7 @@ public class UrlServiceImpl implements UrlService {
         int maxAttempts = 5;
 
         for(int attempt=0;attempt<5;attempt++){
-            String code = base62Encoder.encode();
+            String code = randomCodeGenerator.encode();
             if(!urlMappingRepository.existsByShortCode(code)){
                 return code;
             }

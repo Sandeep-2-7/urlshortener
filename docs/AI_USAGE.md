@@ -37,7 +37,7 @@ Each stage was defined with:
 
 - **Intent** — what capability we were adding (e.g. "async click logging that doesn't block
   redirect")
-- **Constraints** — fixed tech stack (Spring Boot 3, Java 17, MySQL via Docker, Caffeine,
+- **Constraints** — fixed tech stack (Spring Boot 4.1, Java 17, MySQL via Docker, Caffeine,
   no Kafka/Redis to keep scope realistic for 2-3 days)
 - **Acceptance criteria** — code compiles, is testable via Postman, and every design choice
   has a stated rationale defensible in review
@@ -85,13 +85,20 @@ retained ownership of correctness:
 ## 5. Quality Gates Applied at Each Stage
 
 - **Compile check** after every stage before proceeding to the next
-- **Manual API verification** via Postman/curl for every new endpoint
+- **Automated test suite** (`mvn test`, run during the build) covering unit and integration
+  scenarios for every endpoint — see `E2E_TEST_CASES.md` for the full mapping
+- **Manual API verification** via Postman/curl during development, ahead of writing the
+  corresponding automated test, for fast iteration
 - **Log-based behavioral proof** (not just "no errors") — e.g. confirming async via thread
-  name prefixes, confirming cache via absence of repeated SQL queries
+  name prefixes, confirming cache via absence of repeated SQL queries; kept as a manual check
+  since it isn't a single assertable value
 - **Exception path testing** — verified 404 (not found), 410 (expired), 409 (alias conflict),
   429 (rate limited), and 400 (validation) all return structured JSON errors, not raw stack
-  traces
-- **Rate limit load testing** via Postman Collection Runner (25 iterations, 0ms delay)
+  traces; covered by automated integration tests
+- **Rate limit load testing** via Postman Collection Runner (25 iterations, 0ms delay) — kept
+  manual, as the automated test profile raises the rate limit specifically to avoid
+  interfering with other tests
+
 
 ---
 
