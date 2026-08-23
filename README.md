@@ -29,9 +29,9 @@ has a stated rationale and, where relevant, a rejected alternative.
 
 | Rubric Item | Where to Find It |
 |---|---|
-| Requirement Understanding | [`docs/GREENFIELD_SCENARIO.md`](docs/GREENFIELD_SCENARIO.md) §1 |
-| Task Decomposition | Each scenario doc, §2 (dependency-ordered task breakdown) |
-| Codebase Reasoning (Brownfield) | [`docs/BROWNFIELD_SCENARIO.md`](docs/BROWNFIELD_SCENARIO.md) §1 — impact analysis table |
+| Requirement Understanding | [`docs/GREENFIELD_SCENARIO.md`](docs/GREENFIELD_SCENARIO.md) (Section 1) |
+| Task Decomposition | Each scenario doc (Section 2) — dependency-ordered task breakdown |
+| Codebase Reasoning (Brownfield) | [`docs/BROWNFIELD_SCENARIO.md`](docs/BROWNFIELD_SCENARIO.md) (Section 1) — impact analysis table |
 | AI-Assisted Execution (critical differentiator) | [`docs/AI_USAGE.md`](docs/AI_USAGE.md) — full traceability log |
 | Engineering Output (code, tests, docs) | This repo + [`docs/`](docs/) folder |
 | Validation & Risk Control | [`docs/ENGINEERING_SUMMARY.md`](docs/ENGINEERING_SUMMARY.md) — risks/trade-offs table |
