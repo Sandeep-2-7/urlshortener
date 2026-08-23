@@ -10,12 +10,12 @@ rate limiting, collision handling) built in.
 This project follows **AI-assisted engineering execution**, not autonomous orchestration:
 AI (Claude) was used as an accelerator for implementation and design-rationale discussion,
 while all decisions, debugging, and quality ownership remained with the engineer. See
-[`AI_USAGE.md`](src/main/java/com/assignment/urlshortener/docs/AI_USAGE.md) for the full traceability log of accepted, edited, and
+[`AI_USAGE.md`](docs/AI_USAGE.md) for the full traceability log of accepted, edited, and
 rejected AI suggestions.
 
 ## Tech Stack
 
-- Java 17, Spring Boot 3
+- Java 17, Spring Boot 4
 - MySQL 8.0 (via Docker Compose)
 - Spring Data JPA / Hibernate
 - Caffeine (in-memory caching, rate limiting)
@@ -78,7 +78,7 @@ dependency for tests.
 
 A full manual test checklist (15 scenarios covering happy paths, error handling, caching,
 async behavior, rate limiting, and the brownfield cache-eviction fix) is in
-[`E2E_TEST_CASES.md`](src/main/java/com/assignment/urlshortener/docs/E2E_TEST_CASES.md).
+[`E2E_TEST_CASES.md`](docs/E2E_TEST_CASES.md).
 
 Quick smoke test:
 ```bash
@@ -97,12 +97,12 @@ curl http://localhost:8080/api/urls/{shortCode}/stats
 
 | Doc | Contents |
 |---|---|
-| [`ARCHITECTURE.md`](src/main/java/com/assignment/urlshortener/docs/ARCHITECTURE.md) | Components, request flows, design decisions & rationale, scaling notes |
-| [`SETUP.md`](src/main/java/com/assignment/urlshortener/docs/SETUP.md) | Detailed setup/run/stop instructions |
-| [`AI_USAGE.md`](src/main/java/com/assignment/urlshortener/docs/AI_USAGE.md) | AI-assisted engineering traceability (accepted/edited/rejected suggestions) |
-| [`AMBIGUOUS_SCENARIO.md`](src/main/java/com/assignment/urlshortener/docs/AMBIGUOUS_SCENARIO.md) | How the ambiguous "trending URLs" requirement was interpreted and resolved |
-| [`ENGINEERING_SUMMARY.md`](src/main/java/com/assignment/urlshortener/docs/ENGINEERING_SUMMARY.md) | Final plan, artifacts, risks/trade-offs, assumptions, limitations |
-| [`E2E_TEST_CASES.md`](src/main/java/com/assignment/urlshortener/docs/E2E_TEST_CASES.md) | Full manual end-to-end test checklist |
+| [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Components, request flows, design decisions & rationale, scaling notes |
+| [`SETUP.md`](docs/SETUP.md) | Detailed setup/run/stop instructions |
+| [`AI_USAGE.md`](docs/AI_USAGE.md) | AI-assisted engineering traceability (accepted/edited/rejected suggestions) |
+| [`AMBIGUOUS_SCENARIO.md`](docs/AMBIGUOUS_SCENARIO.md) | How the ambiguous "trending URLs" requirement was interpreted and resolved |
+| [`ENGINEERING_SUMMARY.md`](docs/ENGINEERING_SUMMARY.md) | Final plan, artifacts, risks/trade-offs, assumptions, limitations |
+| [`E2E_TEST_CASES.md`](docs/E2E_TEST_CASES.md) | Full manual end-to-end test checklist |
 
 ## Key Design Decisions (summary — full rationale in ARCHITECTURE.md)
 
@@ -122,7 +122,7 @@ curl http://localhost:8080/api/urls/{shortCode}/stats
 - Trending is computed on-demand, not precomputed/scheduled
 - Schema managed via plain `schema.sql`, not Flyway/Liquibase
 
-See [`ENGINEERING_SUMMARY.md`](src/main/java/com/assignment/urlshortener/docs/ENGINEERING_SUMMARY.md) for the complete list with
+See [`ENGINEERING_SUMMARY.md`](docs/ENGINEERING_SUMMARY.md) for the complete list with
 mitigation/scaling notes.
 
 ## Stopping the App
